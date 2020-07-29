@@ -1,6 +1,6 @@
 {
   "name": "gudangjs",
-  "version": "1.0.2",
+  "version": "1.0.5",
   "description": "GudangJS - A simple and lightweight javascript Log service",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
