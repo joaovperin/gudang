@@ -32,6 +32,6 @@ export default abstract class AbstractLogAppender implements LogAppender {
     /**
     * Flush the lines to disk (or wherever you want to)
     */
-    abstract flush(): void;
+    flush(): void { }
 
 }
