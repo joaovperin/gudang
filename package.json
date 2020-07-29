@@ -1,6 +1,6 @@
 {
   "name": "gudangjs",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "GudangJS - A simple and lightweight javascript Log service",
   "scripts": {
     "build": "tsc -p .",
@@ -23,7 +23,6 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "nodemon": "^2.0.4",
     "ts-node": "^8.10.2",
     "tslint": "^6.1.2",
     "typescript": "^3.9.7"
