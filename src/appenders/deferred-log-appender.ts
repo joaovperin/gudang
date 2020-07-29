@@ -11,7 +11,7 @@ import LogLine from "../log-line";
 export default abstract class DeferredLogAppender implements LogAppender {
 
     /** Logged lines */
-    private lines: LogLine[] = [];
+    protected lines: LogLine[] = [];
 
     /**
      * Append a line to the appender

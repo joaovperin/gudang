@@ -27,4 +27,11 @@ export default class ConsoleLogAppender implements LogAppender {
         }
     }
 
+    /**
+     * Flush the lines to disk (or wherever you want to)
+     */
+    flush(): void {
+        // Console doesn't need to flush
+    }
+
 }

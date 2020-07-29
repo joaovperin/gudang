@@ -12,4 +12,9 @@ export default interface LogAppender {
      */
     append(line: LogLine): void;
 
+    /**
+    * Flush the lines to disk (or wherever you want to)
+    */
+    flush(): void;
+
 }

@@ -20,8 +20,15 @@ export default class Log {
     /**
      * Adds an appender to the log singleton
      */
-    static addAppender(appender: LogAppender) {
+    static addAppender(appender: LogAppender): void {
         Log._instance.appenders.push(appender);
+    }
+
+    /**
+     * Flush all the appenders
+     */
+    static flush(): void {
+        Log._instance.appenders.forEach(e => e.flush());
     }
 
     /**
