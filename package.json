@@ -1,0 +1,31 @@
+{
+  "name": "gudangjs",
+  "version": "1.0.0",
+  "description": "GudangJS - A simple and lightweight javascript Log service",
+  "scripts": {
+    "build": "tsc -p .",
+    "test": "echo \"Not testable yet!\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/joaovperin/gudang.git"
+  },
+  "keywords": [],
+  "author": "joaovperin",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/joaovperin/gudang/issues"
+  },
+  "homepage": "https://github.com/joaovperin/gudang#readme",
+  "engines": {
+    "node": ">= 13.9.0",
+    "npm": ">= 6.13.7"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "nodemon": "^2.0.4",
+    "ts-node": "^8.10.2",
+    "tslint": "^6.1.2",
+    "typescript": "^3.9.7"
+  }
+}
