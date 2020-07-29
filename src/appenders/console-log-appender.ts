@@ -1,11 +1,11 @@
-import LogAppender from "../log-appender";
 import LogLine from "../log-line";
 import LogLevel from "../log-level";
+import AbstractLogAppender from "./abstract-log-appender";
 
 /**
  * Console log appender
  */
-export default class ConsoleLogAppender implements LogAppender {
+export default class ConsoleLogAppender extends AbstractLogAppender {
 
     /**
      * Append a line to the appender
@@ -13,7 +13,8 @@ export default class ConsoleLogAppender implements LogAppender {
      * @param line
      */
     append(line: LogLine): void {
-        const { level, text } = line;
+        const text = this.formatter.format(line);
+        const { level } = line;
         switch (level) {
             case LogLevel.INFO:
                 console.info(text);
@@ -28,10 +29,8 @@ export default class ConsoleLogAppender implements LogAppender {
     }
 
     /**
-     * Flush the lines to disk (or wherever you want to)
+     * Console isn't flushable
      */
-    flush(): void {
-        // Console doesn't need to flush
-    }
+    flush(): void { }
 
 }

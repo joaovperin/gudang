@@ -1,15 +1,28 @@
 import Log from "./log";
-import LogAppender from "./log-appender";
+import LogAppender from "./interfaces/log-appender";
 import ConsoleLogAppender from "./appenders/console-log-appender";
 import LogLine from "./log-line";
 import LogLevel from "./log-level";
 import DeferredLogAppender from "./appenders/deferred-log-appender";
+import AbstractLogAppender from "./appenders/abstract-log-appender";
+import FileSystemLogAppender from "./appenders/file-system-log-appender";
+import DefaultLogFormatter from "./formatters/default-log-formatter";
+import LogFormatter from "./interfaces/log-formatter";
 
 export {
+    // Main class
     Log,
+    // Models
     LogLine,
     LogLevel,
+    // Interfaces
     LogAppender,
+    LogFormatter,
+    // Appenders
     ConsoleLogAppender,
-    DeferredLogAppender
+    DeferredLogAppender,
+    FileSystemLogAppender,
+    AbstractLogAppender,
+    // Formatters
+    DefaultLogFormatter
 };

@@ -1,4 +1,4 @@
-import LogLine from "./log-line";
+import LogLine from "../log-line";
 
 /**
  * Interface for Log appenders

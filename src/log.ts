@@ -1,4 +1,4 @@
-import LogAppender from "./log-appender";
+import LogAppender from "./interfaces/log-appender";
 import LogLevel from "./log-level";
 import LogLine from "./log-line";
 import { ConsoleLogAppender } from ".";
@@ -14,7 +14,15 @@ export default class Log {
     private appenders: LogAppender[];
 
     private constructor () {
-        this.appenders = [];
+        // Defaults with a console log appender
+        this.appenders = [new ConsoleLogAppender()];
+    }
+
+    /**
+     * Sets the log appenders to the log singleton
+     */
+    static setAppenders(appenders: LogAppender[]): void {
+        Log._instance.appenders = appenders;
     }
 
     /**
@@ -65,11 +73,7 @@ export default class Log {
      * @param level
      */
     private static log(text: string, level: LogLevel): void {
-        // Initialize with a default log appender if no one was provided
-        if (!Log._instance.appenders.length) {
-            Log._instance.appenders.push(new ConsoleLogAppender());
-        }
-        const line = new LogLine(text, level);
+        const line = new LogLine(level, text, new Date());
         Log._instance.appenders.forEach(e => e.append(line));
     }
 

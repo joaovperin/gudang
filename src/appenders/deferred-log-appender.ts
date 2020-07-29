@@ -1,5 +1,5 @@
-import LogAppender from "../log-appender";
 import LogLine from "../log-line";
+import AbstractLogAppender from "./abstract-log-appender";
 
 /**
  * Deferred log appender
@@ -8,7 +8,7 @@ import LogLine from "../log-line";
  *
  * The flush function needs to be implemented.
  */
-export default abstract class DeferredLogAppender implements LogAppender {
+export default abstract class DeferredLogAppender extends AbstractLogAppender {
 
     /** Logged lines */
     protected lines: LogLine[] = [];

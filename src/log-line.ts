@@ -5,14 +5,17 @@ import LogLevel from "./log-level";
  */
 export default class LogLine {
 
-    /** Text */
-    text: string;
     /** Level */
     level: LogLevel;
+    /** Text */
+    text: string;
+    /** Timestamp */
+    timestamp: Date;
 
-    constructor (text: string, level: LogLevel) {
+    constructor (level: LogLevel, text: string, timestamp: Date) {
         this.text = text;
         this.level = level;
+        this.timestamp = timestamp;
     }
 
 }
