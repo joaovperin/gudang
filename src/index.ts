@@ -10,8 +10,6 @@ import DefaultLogFormatter from "./formatters/default-log-formatter";
 import LogFormatter from "./interfaces/log-formatter";
 
 export {
-    // Main class
-    Log,
     // Models
     LogLine,
     LogLevel,
@@ -19,10 +17,12 @@ export {
     LogAppender,
     LogFormatter,
     // Appenders
-    ConsoleLogAppender,
-    DeferredLogAppender,
-    FileSystemLogAppender,
     AbstractLogAppender,
+    DeferredLogAppender,
+    ConsoleLogAppender,
+    FileSystemLogAppender,
     // Formatters
-    DefaultLogFormatter
+    DefaultLogFormatter,
+    // Main class
+    Log
 };

@@ -2,6 +2,7 @@ import LogAppender from "../interfaces/log-appender";
 import LogLine from "../log-line";
 import fs, { WriteStream } from 'fs';
 import AbstractLogAppender from "./abstract-log-appender";
+import { LogFormatter, DefaultLogFormatter } from "..";
 
 /**
  * Filesystem log appender
@@ -15,8 +16,8 @@ export default class FileSystemLogAppender extends AbstractLogAppender {
     /** Filepointer */
     private _stream: WriteStream;
 
-    constructor (logPath: string) {
-        super();
+    constructor (logPath: string, formatter: LogFormatter = new DefaultLogFormatter()) {
+        super(formatter);
         this.logPath = logPath;
     }
 

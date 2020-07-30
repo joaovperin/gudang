@@ -1,7 +1,7 @@
-import LogAppender from "./interfaces/log-appender";
 import LogLevel from "./log-level";
 import LogLine from "./log-line";
-import { ConsoleLogAppender } from ".";
+import LogAppender from "./interfaces/log-appender";
+import { DefaultLogFormatter, ConsoleLogAppender } from ".";
 
 /**
  * Log main class
@@ -14,8 +14,7 @@ export default class Log {
     private appenders: LogAppender[];
 
     private constructor () {
-        // Defaults with a console log appender
-        this.appenders = [new ConsoleLogAppender()];
+        this.appenders = [];
     }
 
     /**
@@ -73,6 +72,10 @@ export default class Log {
      * @param level
      */
     private static log(text: string, level: LogLevel): void {
+        // Defaults with a console log appender if no one was provided
+        if (!Log._instance.appenders.length) {
+            Log._instance.appenders.push(new ConsoleLogAppender());
+        }
         const line = new LogLine(level, text, new Date());
         Log._instance.appenders.forEach(e => e.append(line));
     }

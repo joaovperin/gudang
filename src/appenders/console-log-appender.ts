@@ -1,11 +1,16 @@
 import LogLine from "../log-line";
 import LogLevel from "../log-level";
 import AbstractLogAppender from "./abstract-log-appender";
+import { DefaultLogFormatter, LogFormatter } from "..";
 
 /**
  * Console log appender
  */
 export default class ConsoleLogAppender extends AbstractLogAppender {
+
+    constructor (formatter: LogFormatter = new DefaultLogFormatter()) {
+        super(formatter);
+    }
 
     /**
      * Append a line to the appender

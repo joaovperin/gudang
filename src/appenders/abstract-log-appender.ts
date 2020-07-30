@@ -1,7 +1,6 @@
-import LogAppender from "../interfaces/log-appender";
 import LogLine from "../log-line";
 import LogFormatter from "../interfaces/log-formatter";
-import DefaultLogFormatter from "../formatters/default-log-formatter";
+import LogAppender from "../interfaces/log-appender";
 
 /**
  * Abstract log appender
@@ -11,7 +10,7 @@ export default abstract class AbstractLogAppender implements LogAppender {
     /** Line formatter */
     protected formatter: LogFormatter;
 
-    constructor (formatter: LogFormatter = new DefaultLogFormatter()) {
+    constructor (formatter: LogFormatter) {
         this.formatter = formatter;
     }
 

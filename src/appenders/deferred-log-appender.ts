@@ -1,5 +1,6 @@
 import LogLine from "../log-line";
 import AbstractLogAppender from "./abstract-log-appender";
+import { LogFormatter, DefaultLogFormatter } from "..";
 
 /**
  * Deferred log appender
@@ -12,6 +13,10 @@ export default abstract class DeferredLogAppender extends AbstractLogAppender {
 
     /** Logged lines */
     protected lines: LogLine[] = [];
+
+    constructor (formatter: LogFormatter = new DefaultLogFormatter()) {
+        super(formatter);
+    }
 
     /**
      * Append a line to the appender

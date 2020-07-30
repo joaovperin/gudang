@@ -1,11 +1,13 @@
 {
   "name": "gudangjs",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "GudangJS - A simple and lightweight javascript Log service",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc -p .",
+    "start": "ts-node src/example.ts -e ts",
+    "publish": "tsc -p . && npm publish",
     "test": "echo \"Not testable yet!\""
   },
   "repository": {
@@ -20,8 +22,8 @@
   },
   "homepage": "https://github.com/joaovperin/gudang#readme",
   "engines": {
-    "node": ">= 10.16.3",
-    "npm": ">= 6.9.0"
+    "node": ">= 13.9.0",
+    "npm": ">= 6.13.7"
   },
   "dependencies": {},
   "devDependencies": {

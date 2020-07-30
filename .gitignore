@@ -104,3 +104,4 @@ dist
 .tern-port
 
 # ---------- CUSTOM IGNORES ------------ #
+tmp
