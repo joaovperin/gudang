@@ -42,5 +42,15 @@ class JohnDoeAppender extends AbstractLogAppender {
 
 }
 // Don't forget to add that to the logger!
-Log.addAppender(new HttpLogAppender());
+Log.addAppender(new JohnDoeAppender());
 ```
+
+#### Use multiple appenders :
+```typescript
+Log.setAppenders([
+    new ConsoleLogAppender(),
+    new FileSystemLogAppender('/tmp/my_log.txt')
+]);
+```
+
+Feel free to request for improvements or open issues for bugs :D
