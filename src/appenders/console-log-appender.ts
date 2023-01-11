@@ -21,6 +21,9 @@ export default class ConsoleLogAppender extends AbstractLogAppender {
         const text = this.formatter.format(line);
         const { level } = line;
         switch (level) {
+            case LogLevel.DEBUG:
+                console.debug(text);
+                break;
             case LogLevel.INFO:
                 console.info(text);
                 break;
