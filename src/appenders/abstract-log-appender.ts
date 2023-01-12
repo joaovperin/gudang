@@ -1,6 +1,6 @@
-import LogLine from "../log-line";
-import LogFormatter from "../interfaces/log-formatter";
 import LogAppender from "../interfaces/log-appender";
+import LogFormatter from "../interfaces/log-formatter";
+import LogLine from "../log-line";
 
 /**
  * Abstract log appender

@@ -1,8 +1,7 @@
-import LogAppender from "../interfaces/log-appender";
-import LogLine from "../log-line";
 import fs, { WriteStream } from 'fs';
+import { DefaultLogFormatter, LogFormatter } from "..";
+import LogLine from "../log-line";
 import AbstractLogAppender from "./abstract-log-appender";
-import { LogFormatter, DefaultLogFormatter } from "..";
 
 /**
  * Filesystem log appender

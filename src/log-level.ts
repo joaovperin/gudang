@@ -6,6 +6,7 @@ enum LogLevel {
     INFO = 'info',
     WARN = 'warn',
     ERROR = 'error',
+    NONE = 'none',
 };
 
 export default LogLevel;

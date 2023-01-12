@@ -1,7 +1,7 @@
-import LogLine from "../log-line";
-import LogLevel from "../log-level";
-import AbstractLogAppender from "./abstract-log-appender";
 import { DefaultLogFormatter, LogFormatter } from "..";
+import LogLevel from "../log-level";
+import LogLine from "../log-line";
+import AbstractLogAppender from "./abstract-log-appender";
 
 /**
  * Console log appender
@@ -32,6 +32,8 @@ export default class ConsoleLogAppender extends AbstractLogAppender {
                 break;
             case LogLevel.ERROR:
                 console.error(text);
+                break;
+            case LogLevel.NONE:
                 break;
         }
     }

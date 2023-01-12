@@ -1,6 +1,6 @@
+import { DefaultLogFormatter, LogFormatter } from "..";
 import LogLine from "../log-line";
 import AbstractLogAppender from "./abstract-log-appender";
-import { LogFormatter, DefaultLogFormatter } from "..";
 
 /**
  * Deferred log appender

@@ -1,10 +1,20 @@
+import { ConsoleLogAppender } from ".";
+import LogAppender from "./interfaces/log-appender";
 import LogLevel from "./log-level";
 import LogLine from "./log-line";
-import LogAppender from "./interfaces/log-appender";
-import { DefaultLogFormatter, ConsoleLogAppender } from ".";
 
 /**
- * Log main class
+ * Log main class.
+ * This class is a singleton, so you can't instantiate it.
+ * You can use the static methods to log lines.
+ * You can also set the global log level.
+ *
+ * If the level is set to DEBUG, all lines will be logged.
+ * If the level is set to INFO, only INFO, WARN and ERROR lines will be logged.
+ * If the level is set to WARN, only WARN and ERROR lines will be logged.
+ * If the level is set to ERROR, only ERROR lines will be logged.
+ * If the level is set to NONE, no lines will be logged.
+ *
  */
 export default class Log {
 
@@ -12,6 +22,25 @@ export default class Log {
     private static readonly _instance = new Log();
     /** Appenders */
     private appenders: LogAppender[];
+    /** Global LOG Level */
+    private _level: LogLevel = LogLevel.INFO;
+
+    /**
+     * Gets the global log level. If the level is set to INFO, only INFO, WARN and ERROR lines will be logged.
+     * If the level is set to WARN, only WARN and ERROR lines will be logged.
+     * If the level is set to ERROR, only ERROR lines will be logged.
+     * If the level is set to NONE, no lines will be logged.
+     */
+    public static get level(): LogLevel { return Log._instance._level };
+
+    /**
+     * Sets the global log level. If the level is set to INFO, only INFO, WARN and ERROR lines will be logged.
+     *
+     * If the level is set to WARN, only WARN and ERROR lines will be logged.
+     * If the level is set to ERROR, only ERROR lines will be logged.
+     * If the level is set to NONE, no lines will be logged.
+     */
+    public static set level(level: LogLevel) { Log._instance._level = level };
 
     private constructor () {
         this.appenders = [];
@@ -39,12 +68,27 @@ export default class Log {
     }
 
     /**
+     * Register an DEBUG line
+     *
+     * @param text
+     */
+    static debug(text: string): void {
+        const acceptableLevels = [LogLevel.DEBUG, LogLevel.INFO, LogLevel.WARN, LogLevel.ERROR];
+        if (acceptableLevels.indexOf(Log.level) === -1) {
+            return Log.log(text, LogLevel.DEBUG);
+        }
+    }
+
+    /**
      * Register an INFO line
      *
      * @param text
      */
     static info(text: string): void {
-        return Log.log(text, LogLevel.INFO);
+        const acceptableLevels = [LogLevel.INFO, LogLevel.WARN, LogLevel.ERROR];
+        if (acceptableLevels.indexOf(Log.level) === -1) {
+            return Log.log(text, LogLevel.INFO);
+        }
     }
 
     /**
@@ -53,7 +97,10 @@ export default class Log {
      * @param text
      */
     static warn(text: string): void {
-        return Log.log(text, LogLevel.WARN);
+        const acceptableLevels = [LogLevel.WARN, LogLevel.ERROR];
+        if (acceptableLevels.indexOf(Log.level) === -1) {
+            return Log.log(text, LogLevel.WARN);
+        }
     }
 
     /**
@@ -62,7 +109,10 @@ export default class Log {
      * @param text
      */
     static error(text: string): void {
-        return Log.log(text, LogLevel.ERROR);
+        const acceptableLevels = [LogLevel.ERROR];
+        if (acceptableLevels.indexOf(Log.level) === -1) {
+            return Log.log(text, LogLevel.ERROR);
+        }
     }
 
     /**
