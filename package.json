@@ -7,7 +7,7 @@
   "scripts": {
     "build": "tsc -p .",
     "start": "ts-node src/example.ts -e ts",
-    "publish": "tsc -p . && npm publish",
+    "publish": "tsc -p .",
     "test": "echo \"Not testable yet!\""
   },
   "repository": {
