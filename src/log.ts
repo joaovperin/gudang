@@ -74,7 +74,7 @@ export default class Log {
      */
     static debug(text: string): void {
         const acceptableLevels = [LogLevel.DEBUG, LogLevel.INFO, LogLevel.WARN, LogLevel.ERROR];
-        if (acceptableLevels.indexOf(Log.level) === -1) {
+        if (acceptableLevels.indexOf(Log.level) > -1) {
             return Log.log(text, LogLevel.DEBUG);
         }
     }
@@ -86,7 +86,7 @@ export default class Log {
      */
     static info(text: string): void {
         const acceptableLevels = [LogLevel.INFO, LogLevel.WARN, LogLevel.ERROR];
-        if (acceptableLevels.indexOf(Log.level) === -1) {
+        if (acceptableLevels.indexOf(Log.level) > -1) {
             return Log.log(text, LogLevel.INFO);
         }
     }
@@ -98,7 +98,7 @@ export default class Log {
      */
     static warn(text: string): void {
         const acceptableLevels = [LogLevel.WARN, LogLevel.ERROR];
-        if (acceptableLevels.indexOf(Log.level) === -1) {
+        if (acceptableLevels.indexOf(Log.level) > -1) {
             return Log.log(text, LogLevel.WARN);
         }
     }
@@ -110,7 +110,7 @@ export default class Log {
      */
     static error(text: string): void {
         const acceptableLevels = [LogLevel.ERROR];
-        if (acceptableLevels.indexOf(Log.level) === -1) {
+        if (acceptableLevels.indexOf(Log.level) > -1) {
             return Log.log(text, LogLevel.ERROR);
         }
     }
