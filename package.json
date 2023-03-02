@@ -1,13 +1,13 @@
 {
   "name": "gudangjs",
-  "version": "1.1.3",
+  "version": "1.1.4",
   "description": "GudangJS - A simple and lightweight javascript Log service",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc -p .",
+    "prepare ": "build",
     "start": "ts-node src/example.ts -e ts",
-    "publish": "tsc -p .",
     "test": "echo \"Not testable yet!\""
   },
   "repository": {

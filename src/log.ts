@@ -9,11 +9,20 @@ import LogLine from "./log-line";
  * You can use the static methods to log lines.
  * You can also set the global log level.
  *
- * If the level is set to DEBUG, all lines will be logged.
+ * The global log level is used to filter the lines that will be logged.
+ *
+ * If the level is set to TRACE, all lines will be logged.
+ * If the level is set to DEBUG, only DEBUG, INFO, WARN and ERROR lines will be logged.
  * If the level is set to INFO, only INFO, WARN and ERROR lines will be logged.
  * If the level is set to WARN, only WARN and ERROR lines will be logged.
  * If the level is set to ERROR, only ERROR lines will be logged.
  * If the level is set to NONE, no lines will be logged.
+ *
+ * You can also set the appenders to the log singleton.
+ * The appenders are the classes that will process the lines.
+ * You can set multiple appenders.
+ * The default appender is the ConsoleLogAppender.
+ * You can also create your own appenders by implementing the LogAppender interface.
  *
  */
 export default class Log {
@@ -68,7 +77,19 @@ export default class Log {
     }
 
     /**
-     * Register an DEBUG line
+     * Register a TRACE line
+     *
+     * @param text
+     */
+    static trace(text: string): void {
+        const acceptableLevels = [LogLevel.TRACE, LogLevel.DEBUG, LogLevel.INFO, LogLevel.WARN, LogLevel.ERROR];
+        if (acceptableLevels.indexOf(Log.level) > -1) {
+            return Log.log(text, LogLevel.DEBUG);
+        }
+    }
+
+    /**
+     * Register a DEBUG line
      *
      * @param text
      */
@@ -92,7 +113,7 @@ export default class Log {
     }
 
     /**
-     * Register an WARN line
+     * Register a WARN line
      *
      * @param text
      */
