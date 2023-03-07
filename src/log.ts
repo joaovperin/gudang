@@ -82,8 +82,7 @@ export default class Log {
      * @param text
      */
     static trace(text: string): void {
-        const acceptableLevels = [LogLevel.TRACE, LogLevel.DEBUG, LogLevel.INFO, LogLevel.WARN, LogLevel.ERROR];
-        if (acceptableLevels.indexOf(Log.level) > -1) {
+        if (Log.isEnabled(LogLevel.TRACE)) {
             return Log.log(text, LogLevel.DEBUG);
         }
     }
@@ -94,8 +93,7 @@ export default class Log {
      * @param text
      */
     static debug(text: string): void {
-        const acceptableLevels = [LogLevel.DEBUG, LogLevel.INFO, LogLevel.WARN, LogLevel.ERROR];
-        if (acceptableLevels.indexOf(Log.level) > -1) {
+        if (Log.isEnabled(LogLevel.DEBUG)) {
             return Log.log(text, LogLevel.DEBUG);
         }
     }
@@ -106,8 +104,7 @@ export default class Log {
      * @param text
      */
     static info(text: string): void {
-        const acceptableLevels = [LogLevel.INFO, LogLevel.WARN, LogLevel.ERROR];
-        if (acceptableLevels.indexOf(Log.level) > -1) {
+        if (Log.isEnabled(LogLevel.INFO)) {
             return Log.log(text, LogLevel.INFO);
         }
     }
@@ -118,8 +115,7 @@ export default class Log {
      * @param text
      */
     static warn(text: string): void {
-        const acceptableLevels = [LogLevel.WARN, LogLevel.ERROR];
-        if (acceptableLevels.indexOf(Log.level) > -1) {
+        if (Log.isEnabled(LogLevel.WARN)) {
             return Log.log(text, LogLevel.WARN);
         }
     }
@@ -130,8 +126,7 @@ export default class Log {
      * @param text
      */
     static error(text: string): void {
-        const acceptableLevels = [LogLevel.ERROR];
-        if (acceptableLevels.indexOf(Log.level) > -1) {
+        if (Log.isEnabled(LogLevel.ERROR)) {
             return Log.log(text, LogLevel.ERROR);
         }
     }
@@ -149,6 +144,16 @@ export default class Log {
         }
         const line = new LogLine(level, text, new Date());
         Log._instance.appenders.forEach(e => e.append(line));
+    }
+
+    /**
+     * Check if level is enabled
+     * 
+     * @param level
+     */
+    private static isEnabled(level: LogLevel): boolean {
+        const logLevels = [LogLevel.TRACE, LogLevel.DEBUG, LogLevel.INFO, LogLevel.WARN, LogLevel.ERROR];
+        return logLevels.indexOf(level) >= logLevels.indexOf(Log.level);
     }
 
 }
