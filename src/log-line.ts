@@ -11,11 +11,14 @@ export default class LogLine {
     text: string;
     /** Timestamp */
     timestamp: Date;
+    /** Error object if provided */
+    error?: Error;
 
-    constructor (level: LogLevel, text: string, timestamp: Date) {
+    constructor (level: LogLevel, text: string, timestamp: Date, error?: Error) {
         this.text = text;
         this.level = level;
         this.timestamp = timestamp;
+        this.error = error;
     }
 
 }

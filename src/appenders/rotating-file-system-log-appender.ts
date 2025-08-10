@@ -49,8 +49,15 @@ export default class RotatingFileSystemLogAppender extends AbstractLogAppender {
             const filePath = path.join(this.logPath, fileName);
             this._stream = fs.createWriteStream(filePath, { flags: 'a' });
         }
-        // Write a line
-        this._stream.write(`${this.formatter.format(line)}\n`);
+        // Write a line with error if present
+        let logOutput = this.formatter.format(line);
+        if (line.error) {
+            logOutput += `\nError: ${line.error.message}`;
+            if (line.error.stack) {
+                logOutput += `\nStack: ${line.error.stack}`;
+            }
+        }
+        this._stream.write(`${logOutput}\n`);
     }
 
     /**

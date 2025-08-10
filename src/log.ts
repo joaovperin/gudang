@@ -79,70 +79,97 @@ export default class Log {
     /**
      * Register a TRACE line
      *
-     * @param text
+     * @param message Template string with {} placeholders
+     * @param args Arguments to substitute in the message, last argument can be an Error
      */
-    static trace(text: string): void {
+    static trace(message: string, ...args: any[]): void {
         if (Log.isEnabled(LogLevel.TRACE)) {
-            return Log.log(text, LogLevel.DEBUG);
+            return Log.log(message, LogLevel.TRACE, ...args);
         }
     }
 
     /**
      * Register a DEBUG line
      *
-     * @param text
+     * @param message Template string with {} placeholders
+     * @param args Arguments to substitute in the message, last argument can be an Error
      */
-    static debug(text: string): void {
+    static debug(message: string, ...args: any[]): void {
         if (Log.isEnabled(LogLevel.DEBUG)) {
-            return Log.log(text, LogLevel.DEBUG);
+            return Log.log(message, LogLevel.DEBUG, ...args);
         }
     }
 
     /**
      * Register an INFO line
      *
-     * @param text
+     * @param message Template string with {} placeholders
+     * @param args Arguments to substitute in the message, last argument can be an Error
      */
-    static info(text: string): void {
+    static info(message: string, ...args: any[]): void {
         if (Log.isEnabled(LogLevel.INFO)) {
-            return Log.log(text, LogLevel.INFO);
+            return Log.log(message, LogLevel.INFO, ...args);
         }
     }
 
     /**
      * Register a WARN line
      *
-     * @param text
+     * @param message Template string with {} placeholders
+     * @param args Arguments to substitute in the message, last argument can be an Error
      */
-    static warn(text: string): void {
+    static warn(message: string, ...args: any[]): void {
         if (Log.isEnabled(LogLevel.WARN)) {
-            return Log.log(text, LogLevel.WARN);
+            return Log.log(message, LogLevel.WARN, ...args);
         }
     }
 
     /**
      * Register an ERROR line
      *
-     * @param text
+     * @param message Template string with {} placeholders
+     * @param args Arguments to substitute in the message, last argument can be an Error
      */
-    static error(text: string): void {
+    static error(message: string, ...args: any[]): void {
         if (Log.isEnabled(LogLevel.ERROR)) {
-            return Log.log(text, LogLevel.ERROR);
+            return Log.log(message, LogLevel.ERROR, ...args);
         }
     }
 
     /**
      * Register a line to be processed by the appenders
      *
-     * @param text
-     * @param level
+     * @param message Template string with {} placeholders
+     * @param level Log level
+     * @param args Arguments to substitute in the message, last argument can be an Error
      */
-    private static log(text: string, level: LogLevel): void {
+    private static log(message: string, level: LogLevel, ...args: any[]): void {
         // Defaults with a console log appender if no one was provided
         if (!Log._instance.appenders.length) {
             Log._instance.appenders.push(new ConsoleLogAppender());
         }
-        const line = new LogLine(level, text, new Date());
+
+        // Separate error from other arguments
+        let error: Error | undefined;
+        let substitutionArgs = args;
+        
+        if (args.length > 0 && args[args.length - 1] instanceof Error) {
+            error = args[args.length - 1];
+            substitutionArgs = args.slice(0, -1);
+        }
+
+        // Perform string substitution
+        let formattedMessage = message;
+        let argIndex = 0;
+        formattedMessage = formattedMessage.replace(/\{\}/g, () => {
+            if (argIndex < substitutionArgs.length) {
+                const arg = substitutionArgs[argIndex++];
+                return String(arg);
+            }
+            return '{}';
+        });
+
+        const line = new LogLine(level, formattedMessage, new Date(), error);
         Log._instance.appenders.forEach(e => e.append(line));
     }
 
