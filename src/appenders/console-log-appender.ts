@@ -19,22 +19,24 @@ export default class ConsoleLogAppender extends AbstractLogAppender {
      */
     append(line: LogLine): void {
         const text = this.formatter.format(line);
-        const { level, error } = line;
+        const { level, objects } = line;
+        const args = objects.length > 0 ? [text, ...objects] : [text];
+        
         switch (level) {
             case LogLevel.TRACE:
-                console.trace(text, error || '');
+                console.trace(...args);
                 break;
             case LogLevel.DEBUG:
-                console.debug(text, error || '');
+                console.debug(...args);
                 break;
             case LogLevel.INFO:
-                console.info(text, error || '');
+                console.info(...args);
                 break;
             case LogLevel.WARN:
-                console.warn(text, error || '');
+                console.warn(...args);
                 break;
             case LogLevel.ERROR:
-                console.error(text, error || '');
+                console.error(...args);
                 break;
             case LogLevel.NONE:
                 break;

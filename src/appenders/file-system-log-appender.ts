@@ -29,13 +29,20 @@ export default class FileSystemLogAppender extends AbstractLogAppender {
         if (this._stream == null) {
             this._stream = fs.createWriteStream(this.logPath, { flags: 'a' });
         }
-        // Write a line with error if present
+        // Write a line with objects if present
         let logOutput = this.formatter.format(line);
-        if (line.error) {
-            logOutput += `\nError: ${line.error.message}`;
-            if (line.error.stack) {
-                logOutput += `\nStack: ${line.error.stack}`;
-            }
+        if (line.objects.length > 0) {
+            logOutput += '\nObjects:';
+            line.objects.forEach((obj, index) => {
+                if (obj instanceof Error) {
+                    logOutput += `\n[${index}] Error: ${obj.message}`;
+                    if (obj.stack) {
+                        logOutput += `\nStack: ${obj.stack}`;
+                    }
+                } else {
+                    logOutput += `\n[${index}] ${JSON.stringify(obj, null, 2)}`;
+                }
+            });
         }
         this._stream.write(`${logOutput}\n`);
     }

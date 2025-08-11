@@ -20,13 +20,14 @@ describe("Error Handling", () => {
     });
 
     describe("Error object detection", () => {
-        test("should detect Error as last argument", () => {
+        test("should detect Error as object argument", () => {
             const error = new Error("Test error");
             Log.error("Something failed", error);
             
             expect(mockAppender.append).toHaveBeenCalledTimes(1);
             const logLine: LogLine = mockAppender.append.mock.calls[0][0];
             expect(logLine.text).toBe("Something failed");
+            expect(logLine.objects).toContain(error);
             expect(logLine.error).toBe(error);
         });
 
@@ -36,25 +37,30 @@ describe("Error Handling", () => {
             
             const logLine: LogLine = mockAppender.append.mock.calls[0][0];
             expect(logLine.text).toBe("Client ClientA failed");
+            expect(logLine.objects).toContain(error);
             expect(logLine.error).toBe(error);
         });
 
-        test("should handle Error in middle of arguments for substitution", () => {
+        test("should handle Error and other objects in arguments", () => {
             const error = new Error("Middleware error");
-            Log.warn("Client {} threw error: {}", "ClientB", error.message, error);
+            const userData = { id: 123, name: "ClientB" };
+            Log.warn("Client {} threw error: {}", userData.name, error.message, userData, error);
             
             const logLine: LogLine = mockAppender.append.mock.calls[0][0];
             expect(logLine.text).toBe("Client ClientB threw error: Middleware error");
+            expect(logLine.objects).toContain(error);
+            expect(logLine.objects).toContain(userData);
             expect(logLine.error).toBe(error);
         });
 
-        test("should not treat Error-like objects as errors", () => {
+        test("should store Error-like objects but not treat them as errors", () => {
             const fakeError = { message: "fake", stack: "fake stack" };
             Log.error("Fake error: {}", fakeError);
             
             const logLine: LogLine = mockAppender.append.mock.calls[0][0];
             expect(logLine.text).toBe("Fake error: [object Object]");
-            expect(logLine.error).toBeUndefined();
+            expect(logLine.objects).toContain(fakeError);
+            expect(logLine.error).toBeUndefined(); // Only actual Error instances
         });
     });
 
@@ -114,14 +120,16 @@ describe("Error Handling", () => {
             expect(logLine.error).toBe(error);
         });
 
-        test("should handle multiple errors (only last one is treated as error)", () => {
+        test("should handle multiple errors (first error is returned by .error getter)", () => {
             const error1 = new Error("First error");
             const error2 = new Error("Second error");
-            Log.error("Multiple issues: {}", error1.message, error2);
+            Log.error("Multiple issues: {}", error1.message, error1, error2);
             
             const logLine: LogLine = mockAppender.append.mock.calls[0][0];
             expect(logLine.text).toBe("Multiple issues: First error");
-            expect(logLine.error).toBe(error2);
+            expect(logLine.objects).toContain(error1);
+            expect(logLine.objects).toContain(error2);
+            expect(logLine.error).toBe(error1); // First error found
         });
     });
 

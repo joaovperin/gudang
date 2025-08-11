@@ -11,14 +11,21 @@ export default class LogLine {
     text: string;
     /** Timestamp */
     timestamp: Date;
-    /** Error object if provided */
-    error?: Error;
+    /** Object values (non-primitives) for pretty printing */
+    objects: any[];
 
-    constructor (level: LogLevel, text: string, timestamp: Date, error?: Error) {
+    constructor (level: LogLevel, text: string, timestamp: Date, objects: any[] = []) {
         this.text = text;
         this.level = level;
         this.timestamp = timestamp;
-        this.error = error;
+        this.objects = objects;
+    }
+
+    /**
+     * Get the first Error object from the objects array, if any
+     */
+    get error(): Error | undefined {
+        return this.objects.find(obj => obj instanceof Error);
     }
 
 }

@@ -33,7 +33,7 @@ describe("Console Appender Error Display", () => {
     describe("Error object display", () => {
         test("should display error with TRACE level", () => {
             const error = new Error("Trace error");
-            const logLine = new LogLine(LogLevel.TRACE, "Trace message", new Date(), error);
+            const logLine = new LogLine(LogLevel.TRACE, "Trace message", new Date(), [error]);
             
             consoleLogAppender.append(logLine);
             
@@ -42,7 +42,7 @@ describe("Console Appender Error Display", () => {
 
         test("should display error with DEBUG level", () => {
             const error = new Error("Debug error");
-            const logLine = new LogLine(LogLevel.DEBUG, "Debug message", new Date(), error);
+            const logLine = new LogLine(LogLevel.DEBUG, "Debug message", new Date(), [error]);
             
             consoleLogAppender.append(logLine);
             
@@ -51,7 +51,7 @@ describe("Console Appender Error Display", () => {
 
         test("should display error with INFO level", () => {
             const error = new Error("Info error");
-            const logLine = new LogLine(LogLevel.INFO, "Info message", new Date(), error);
+            const logLine = new LogLine(LogLevel.INFO, "Info message", new Date(), [error]);
             
             consoleLogAppender.append(logLine);
             
@@ -60,7 +60,7 @@ describe("Console Appender Error Display", () => {
 
         test("should display error with WARN level", () => {
             const error = new Error("Warn error");
-            const logLine = new LogLine(LogLevel.WARN, "Warn message", new Date(), error);
+            const logLine = new LogLine(LogLevel.WARN, "Warn message", new Date(), [error]);
             
             consoleLogAppender.append(logLine);
             
@@ -69,7 +69,7 @@ describe("Console Appender Error Display", () => {
 
         test("should display error with ERROR level", () => {
             const error = new Error("Error message");
-            const logLine = new LogLine(LogLevel.ERROR, "Error occurred", new Date(), error);
+            const logLine = new LogLine(LogLevel.ERROR, "Error occurred", new Date(), [error]);
             
             consoleLogAppender.append(logLine);
             
@@ -83,7 +83,7 @@ describe("Console Appender Error Display", () => {
             
             consoleLogAppender.append(logLine);
             
-            expect(consoleSpy.trace).toHaveBeenCalledWith("Trace message", "");
+            expect(consoleSpy.trace).toHaveBeenCalledWith("Trace message");
         });
 
         test("should display message without error for DEBUG", () => {
@@ -91,7 +91,7 @@ describe("Console Appender Error Display", () => {
             
             consoleLogAppender.append(logLine);
             
-            expect(consoleSpy.debug).toHaveBeenCalledWith("Debug message", "");
+            expect(consoleSpy.debug).toHaveBeenCalledWith("Debug message");
         });
 
         test("should display message without error for INFO", () => {
@@ -99,7 +99,7 @@ describe("Console Appender Error Display", () => {
             
             consoleLogAppender.append(logLine);
             
-            expect(consoleSpy.info).toHaveBeenCalledWith("Info message", "");
+            expect(consoleSpy.info).toHaveBeenCalledWith("Info message");
         });
 
         test("should display message without error for WARN", () => {
@@ -107,7 +107,7 @@ describe("Console Appender Error Display", () => {
             
             consoleLogAppender.append(logLine);
             
-            expect(consoleSpy.warn).toHaveBeenCalledWith("Warn message", "");
+            expect(consoleSpy.warn).toHaveBeenCalledWith("Warn message");
         });
 
         test("should display message without error for ERROR", () => {
@@ -115,14 +115,14 @@ describe("Console Appender Error Display", () => {
             
             consoleLogAppender.append(logLine);
             
-            expect(consoleSpy.error).toHaveBeenCalledWith("Error message", "");
+            expect(consoleSpy.error).toHaveBeenCalledWith("Error message");
         });
     });
 
     describe("Different error types", () => {
         test("should handle TypeError", () => {
             const error = new TypeError("Type error");
-            const logLine = new LogLine(LogLevel.ERROR, "Type error occurred", new Date(), error);
+            const logLine = new LogLine(LogLevel.ERROR, "Type error occurred", new Date(), [error]);
             
             consoleLogAppender.append(logLine);
             
@@ -131,7 +131,7 @@ describe("Console Appender Error Display", () => {
 
         test("should handle RangeError", () => {
             const error = new RangeError("Range error");
-            const logLine = new LogLine(LogLevel.ERROR, "Range error occurred", new Date(), error);
+            const logLine = new LogLine(LogLevel.ERROR, "Range error occurred", new Date(), [error]);
             
             consoleLogAppender.append(logLine);
             
@@ -141,7 +141,7 @@ describe("Console Appender Error Display", () => {
         test("should handle custom error with stack trace", () => {
             const error = new Error("Custom error");
             error.stack = "Custom stack trace";
-            const logLine = new LogLine(LogLevel.ERROR, "Custom error occurred", new Date(), error);
+            const logLine = new LogLine(LogLevel.ERROR, "Custom error occurred", new Date(), [error]);
             
             consoleLogAppender.append(logLine);
             
@@ -152,7 +152,7 @@ describe("Console Appender Error Display", () => {
     describe("NONE level handling", () => {
         test("should not call any console method for NONE level", () => {
             const error = new Error("Should not be displayed");
-            const logLine = new LogLine(LogLevel.NONE, "None message", new Date(), error);
+            const logLine = new LogLine(LogLevel.NONE, "None message", new Date(), [error]);
             
             consoleLogAppender.append(logLine);
             
@@ -172,7 +172,7 @@ describe("Console Appender Error Display", () => {
             const appender = new ConsoleLogAppender(mockFormatter);
             
             const error = new Error("Test error");
-            const logLine = new LogLine(LogLevel.INFO, "Original message", new Date(), error);
+            const logLine = new LogLine(LogLevel.INFO, "Original message", new Date(), [error]);
             
             appender.append(logLine);
             
@@ -191,7 +191,7 @@ describe("Console Appender Error Display", () => {
             appender.append(logLine);
             
             expect(mockFormatter.format).toHaveBeenCalledWith(logLine);
-            expect(consoleSpy.warn).toHaveBeenCalledWith("Formatted message", "");
+            expect(consoleSpy.warn).toHaveBeenCalledWith("Formatted message");
         });
     });
 

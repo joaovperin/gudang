@@ -80,7 +80,7 @@ export default class Log {
      * Register a TRACE line
      *
      * @param message Template string with {} placeholders
-     * @param args Arguments to substitute in the message, last argument can be an Error
+     * @param args Arguments to substitute in the message, non-primitive objects will be stored for pretty printing
      */
     static trace(message: string, ...args: any[]): void {
         if (Log.isEnabled(LogLevel.TRACE)) {
@@ -92,7 +92,7 @@ export default class Log {
      * Register a DEBUG line
      *
      * @param message Template string with {} placeholders
-     * @param args Arguments to substitute in the message, last argument can be an Error
+     * @param args Arguments to substitute in the message, non-primitive objects will be stored for pretty printing
      */
     static debug(message: string, ...args: any[]): void {
         if (Log.isEnabled(LogLevel.DEBUG)) {
@@ -104,7 +104,7 @@ export default class Log {
      * Register an INFO line
      *
      * @param message Template string with {} placeholders
-     * @param args Arguments to substitute in the message, last argument can be an Error
+     * @param args Arguments to substitute in the message, non-primitive objects will be stored for pretty printing
      */
     static info(message: string, ...args: any[]): void {
         if (Log.isEnabled(LogLevel.INFO)) {
@@ -116,7 +116,7 @@ export default class Log {
      * Register a WARN line
      *
      * @param message Template string with {} placeholders
-     * @param args Arguments to substitute in the message, last argument can be an Error
+     * @param args Arguments to substitute in the message, non-primitive objects will be stored for pretty printing
      */
     static warn(message: string, ...args: any[]): void {
         if (Log.isEnabled(LogLevel.WARN)) {
@@ -128,7 +128,7 @@ export default class Log {
      * Register an ERROR line
      *
      * @param message Template string with {} placeholders
-     * @param args Arguments to substitute in the message, last argument can be an Error
+     * @param args Arguments to substitute in the message, non-primitive objects will be stored for pretty printing
      */
     static error(message: string, ...args: any[]): void {
         if (Log.isEnabled(LogLevel.ERROR)) {
@@ -141,7 +141,7 @@ export default class Log {
      *
      * @param message Template string with {} placeholders
      * @param level Log level
-     * @param args Arguments to substitute in the message, last argument can be an Error
+     * @param args Arguments to substitute in the message and objects to store
      */
     private static log(message: string, level: LogLevel, ...args: any[]): void {
         // Defaults with a console log appender if no one was provided
@@ -149,13 +149,18 @@ export default class Log {
             Log._instance.appenders.push(new ConsoleLogAppender());
         }
 
-        // Separate error from other arguments
-        let error: Error | undefined;
-        let substitutionArgs = args;
+        // Separate objects from primitives
+        const objects: any[] = [];
+        const substitutionArgs: any[] = [];
         
-        if (args.length > 0 && args[args.length - 1] instanceof Error) {
-            error = args[args.length - 1];
-            substitutionArgs = args.slice(0, -1);
+        for (const arg of args) {
+            if (Log.isPrimitive(arg)) {
+                substitutionArgs.push(arg);
+            } else {
+                // For non-primitives, add to substitution for {} replacement but also store as object
+                substitutionArgs.push(arg);
+                objects.push(arg);
+            }
         }
 
         // Perform string substitution
@@ -169,8 +174,15 @@ export default class Log {
             return '{}';
         });
 
-        const line = new LogLine(level, formattedMessage, new Date(), error);
+        const line = new LogLine(level, formattedMessage, new Date(), objects);
         Log._instance.appenders.forEach(e => e.append(line));
+    }
+
+    /**
+     * Check if a value is a primitive type
+     */
+    private static isPrimitive(value: any): boolean {
+        return value == null || (typeof value !== "object" && typeof value !== "function");
     }
 
     /**

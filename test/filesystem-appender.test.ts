@@ -48,39 +48,39 @@ describe("FileSystem Appenders Error Handling", () => {
         test("should write log message with error details", () => {
             const error = new Error("Test error");
             error.stack = "Error: Test error\n    at test.js:1:1";
-            const logLine = new LogLine(LogLevel.ERROR, "Something failed", new Date(), error);
+            const logLine = new LogLine(LogLevel.ERROR, "Something failed", new Date(), [error]);
 
             appender.append(logLine);
 
-            const expectedOutput = "Something failed\nError: Test error\nStack: Error: Test error\n    at test.js:1:1\n";
+            const expectedOutput = "Something failed\nObjects:\n[0] Error: Test error\nStack: Error: Test error\n    at test.js:1:1\n";
             expect(mockWriteStream.write).toHaveBeenCalledWith(expectedOutput);
         });
 
         test("should write error without stack trace", () => {
             const error = new Error("Simple error");
             delete error.stack; // Remove stack trace
-            const logLine = new LogLine(LogLevel.WARN, "Warning occurred", new Date(), error);
+            const logLine = new LogLine(LogLevel.WARN, "Warning occurred", new Date(), [error]);
 
             appender.append(logLine);
 
-            const expectedOutput = "Warning occurred\nError: Simple error\n";
+            const expectedOutput = "Warning occurred\nObjects:\n[0] Error: Simple error\n";
             expect(mockWriteStream.write).toHaveBeenCalledWith(expectedOutput);
         });
 
         test("should handle TypeError with stack", () => {
             const error = new TypeError("Type error occurred");
             error.stack = "TypeError: Type error occurred\n    at Object.<anonymous>";
-            const logLine = new LogLine(LogLevel.ERROR, "Type check failed", new Date(), error);
+            const logLine = new LogLine(LogLevel.ERROR, "Type check failed", new Date(), [error]);
 
             appender.append(logLine);
 
-            const expectedOutput = "Type check failed\nError: Type error occurred\nStack: TypeError: Type error occurred\n    at Object.<anonymous>\n";
+            const expectedOutput = "Type check failed\nObjects:\n[0] Error: Type error occurred\nStack: TypeError: Type error occurred\n    at Object.<anonymous>\n";
             expect(mockWriteStream.write).toHaveBeenCalledWith(expectedOutput);
         });
 
         test("should reuse existing stream for multiple writes", () => {
             const logLine1 = new LogLine(LogLevel.INFO, "First message", new Date());
-            const logLine2 = new LogLine(LogLevel.ERROR, "Second message", new Date(), new Error("Error 2"));
+            const logLine2 = new LogLine(LogLevel.ERROR, "Second message", new Date(), [new Error("Error 2")]);
 
             appender.append(logLine1);
             appender.append(logLine2);
@@ -129,11 +129,11 @@ describe("FileSystem Appenders Error Handling", () => {
             appender = new RotatingFileSystemLogAppender('/tmp', 'app-logs', new RawLogFormatter());
             const error = new Error("Rotating error");
             error.stack = "Error: Rotating error\n    at rotate.js:10:5";
-            const logLine = new LogLine(LogLevel.ERROR, "Rotation failed", new originalDate(), error);
+            const logLine = new LogLine(LogLevel.ERROR, "Rotation failed", new originalDate(), [error]);
 
             appender.append(logLine);
 
-            const expectedOutput = "Rotation failed\nError: Rotating error\nStack: Error: Rotating error\n    at rotate.js:10:5\n";
+            const expectedOutput = "Rotation failed\nObjects:\n[0] Error: Rotating error\nStack: Error: Rotating error\n    at rotate.js:10:5\n";
             expect(mockWriteStream.write).toHaveBeenCalledWith(expectedOutput);
         });
 
@@ -157,11 +157,11 @@ describe("FileSystem Appenders Error Handling", () => {
 
             const error = new CustomError("Custom error occurred", "ERR_CUSTOM");
             error.stack = "CustomError: Custom error occurred\n    at custom.js:5:10";
-            const logLine = new LogLine(LogLevel.ERROR, "Custom error detected", new originalDate(), error);
+            const logLine = new LogLine(LogLevel.ERROR, "Custom error detected", new originalDate(), [error]);
 
             appender.append(logLine);
 
-            const expectedOutput = "Custom error detected\nError: Custom error occurred\nStack: CustomError: Custom error occurred\n    at custom.js:5:10\n";
+            const expectedOutput = "Custom error detected\nObjects:\n[0] Error: Custom error occurred\nStack: CustomError: Custom error occurred\n    at custom.js:5:10\n";
             expect(mockWriteStream.write).toHaveBeenCalledWith(expectedOutput);
         });
     });
@@ -170,7 +170,7 @@ describe("FileSystem Appenders Error Handling", () => {
         test("should work with default formatter and errors", () => {
             const appender = new FileSystemLogAppender('/tmp/formatted.log'); // Uses DefaultLogFormatter
             const error = new Error("Formatted error");
-            const logLine = new LogLine(LogLevel.WARN, "Warning message", new originalDate('2023-01-01T12:00:00.000Z'), error);
+            const logLine = new LogLine(LogLevel.WARN, "Warning message", new originalDate('2023-01-01T12:00:00.000Z'), [error]);
 
             appender.append(logLine);
 
@@ -184,7 +184,7 @@ describe("FileSystem Appenders Error Handling", () => {
         test("should handle empty error message", () => {
             const appender = new FileSystemLogAppender('/tmp/test.log', new RawLogFormatter());
             const error = new Error("");
-            const logLine = new LogLine(LogLevel.ERROR, "Empty error", new originalDate(), error);
+            const logLine = new LogLine(LogLevel.ERROR, "Empty error", new originalDate(), [error]);
 
             appender.append(logLine);
 
